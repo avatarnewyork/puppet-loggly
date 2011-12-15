@@ -1,0 +1,7 @@
+##
+# loggly.pp
+##
+
+class loggly {
+
+}
