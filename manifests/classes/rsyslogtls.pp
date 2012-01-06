@@ -14,16 +14,28 @@ class rsyslogtls::config inherits rsyslog::config {
   }
 
   $tlsconf = "tls.conf"
-  
-  file {"$rsyslogd/$tlsconf" :
-    content => template("loggly/tls.conf.erb"),
-    require => File[$rsyslogd],
-    notify => Class["rsyslog::service"],
+  $logglycrt = "/etc/loggly.com.crt"
+
+  File[$rsyslogconf]{
+    content => template("loggly/tls.conf.erb","loggly/rsyslog.conf.erb"),
   }
+  
+  #file {"$rsyslogd/$tlsconf" :
+  #  content => template("loggly/tls.conf.erb"),
+  #  require => File[$rsyslogd],
+  #  notify => Class["rsyslog::service"],
+  #}
+  
+  file {$logglycrt :
+    source => "modules/loggly/loggly.com.crt"
+  }
+  
 }
 
 
 class rsyslogtls inherits rsyslog {
   include rsyslogtls::install, rsyslogtls::config
 
+  
+  
 }
