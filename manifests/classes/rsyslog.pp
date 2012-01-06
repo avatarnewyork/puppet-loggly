@@ -71,13 +71,13 @@ class rsyslog {
   #$tmpl_tls = template("loggly/tls.erb")      
   include rsyslog::install, rsyslog::config, rsyslog::service
 
-  define input($port,$username,$inputid){
+  define input($port,$username,$password,$inputid){
     file { "/etc/rsyslog.d/input_$port.conf" :
       content => template("loggly/input.conf.erb"),
       notify => [Class["rsyslog::service"],Exec["curl -X POST"]],
     }
     exec { "curl -X POST" :
-      command => "curl -X POST -u $username http://avatarnewyork.loggly.com/api/inputs/$inputid/adddevice",
+      command => "curl -X POST -u '$username:$password' -F 'name=$hostname' http://avatarnewyork.loggly.com/api/inputs/$inputid/adddevice",
       cwd => "/usr/bin",
       path => "/usr/bin:/bin",
       refreshonly => true,
