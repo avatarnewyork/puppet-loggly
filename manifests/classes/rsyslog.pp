@@ -72,6 +72,7 @@ class rsyslog {
   include rsyslog::install, rsyslog::config, rsyslog::service
 
   define input($port,$username,$password,$inputid){
+    include rsyslog::service
     file { "/etc/rsyslog.d/input_$port.conf" :
       content => template("loggly/input.conf.erb"),
       notify => [Class["rsyslog::service"],Exec["curl -X POST"]],
@@ -85,6 +86,7 @@ class rsyslog {
   }
 
   define logfile($logname,$filepath,$severity='info'){
+    include rsyslog::service
     file { "/etc/rsyslog.d/$logname.conf" :
       content => template("loggly/log.conf.erb"),
       notify => Class["rsyslog::service"],
