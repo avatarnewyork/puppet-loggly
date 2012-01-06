@@ -1,8 +1,12 @@
 class rsyslogtls::install inherits rsyslog::install{
-  # require CentOS
-  # require EPEL package
-  package {"rsyslog4-gnutls" :
+  $rsyslogtlspkg = $operatingsystem ? {
+    Fedora => "rsyslog-gnutls",
+    CentOS => "rsyslog4-gnutls",
+    default => "rsyslog-gnutls"
+  }
+  package {$rsyslogtlspkg :
     ensure => latest,
+    alias => "rsyslog-gnutls",
   }
 }
 class rsyslogtls::config inherits rsyslog::config {  
@@ -14,16 +18,19 @@ class rsyslogtls::config inherits rsyslog::config {
   }
 
   $tlsconf = "tls.conf"
-  
-  file {"$rsyslogd/$tlsconf" :
-    content => template("loggly/tls.conf.erb"),
-    require => File[$rsyslogd],
-    notify => Class["rsyslog::service"],
+  $logglycrt = "/etc/loggly.com.crt"
+
+  File[$rsyslogconf]{
+    content => template("loggly/tls.conf.erb","loggly/rsyslog.conf.erb"),
   }
+  
+  file {$logglycrt :
+    source => "modules/loggly/loggly.com.crt"
+  }
+  
 }
 
 
 class rsyslogtls inherits rsyslog {
   include rsyslogtls::install, rsyslogtls::config
-
 }

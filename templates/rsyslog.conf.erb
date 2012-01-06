@@ -79,27 +79,5 @@ local7.*                                                /var/log/boot.log
 
 # Loggly 
 $ModLoad imfile
-
-# Apache
-$InputFileName /var/log/httpd/www.testing.com-access_log
-$InputFileTag apache:
-$InputFileStateFile stat-apache-access
-$InputFileSeverity info
-$InputRunFileMonitor
-
-#MySQL
-$InputFileName /var/log/mysqld.log
-$InputFileTag mysql:
-$InputFileStateFile stat-mysqld-log
-$InputFileSeverity info
-$InputRunFileMonitor
-
-
-
-
-
-
 $InputFilePollInterval 10
-#*.* @@logs.loggly.com:18602
-
 $IncludeConfig /etc/rsyslog.d/*.conf
