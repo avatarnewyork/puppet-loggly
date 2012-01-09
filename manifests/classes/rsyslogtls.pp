@@ -25,7 +25,7 @@ class rsyslogtls::config inherits rsyslog::config {
   }
   
   file {$logglycrt :
-    source => "modules/loggly/loggly.com.crt"
+    source => "puppet:///modules/loggly/loggly.com.crt"
   }
   
 }
