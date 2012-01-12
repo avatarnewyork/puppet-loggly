@@ -21,9 +21,9 @@ class rsyslog::install {
   # ius repo required for CentOS to install rsyslog4
   if $operatingsystem == "CentOS" {
     yumrepo{"ius" :
-      descr => "IUS Community Packages for Enterprise Linux 5 - $basearch",     
-      baseurl => "http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/$basearch",
-      mirrorlist => "http://dmirr.iuscommunity.org/mirrorlist?repo=ius-el5&arch=$basearch",
+      descr => 'IUS Community Packages for Enterprise Linux 5 - $basearch',     
+      baseurl => 'http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/$basearch',
+      mirrorlist => 'http://dmirr.iuscommunity.org/mirrorlist?repo=ius-el5&arch=$basearch',
       failovermethod => "priority",
       enabled => 1,
       gpgcheck => 0,
