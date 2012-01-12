@@ -1,12 +1,23 @@
 class rsyslogtls::install inherits rsyslog::install{
+
+  # TODO - clean up dependencies and test on other systems
   $rsyslogtlspkg = $operatingsystem ? {
     Fedora => "rsyslog-gnutls",
     CentOS => "rsyslog4-gnutls",
     default => "rsyslog-gnutls"
   }
-  package {$rsyslogtlspkg :
-    ensure => latest,
-    alias => "rsyslog-gnutls",
+
+  if $operatingsystem == "CentOS"{
+    package {$rsyslogtlspkg :
+      ensure => latest,
+      alias => "rsyslog-gnutls",
+      require => Yumrepo["ius"],
+    }
+  }else{
+    package {$rsyslogtlspkg :
+      ensure => latest,
+      alias => "rsyslog-gnutls",
+    }
   }
 }
 class rsyslogtls::config inherits rsyslog::config {  
