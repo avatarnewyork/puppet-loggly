@@ -84,7 +84,7 @@ class rsyslog::service {
   service{"syslog" :
     ensure => stopped,
     enable => false,
-    require => Class["rsyslog::install"]
+    require => [Class["rsyslog::install"], Service["rsyslog"]]
   }
   
 }
