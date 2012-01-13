@@ -74,17 +74,17 @@ class rsyslog::config {
 }
 
 class rsyslog::service {
+  # Rsyslog replaces syslog - ensure stopped before starting rsyslog
+  service{"syslog" :
+    ensure => stopped,
+    enable => false,
+    require => Class["rsyslog::install"],
+    notify => Service["rsyslog"],
+  }
   service{"rsyslog" :
     ensure => running,
     enable => true,
     require => Class["rsyslog::install"]
-  }
-
-  # Rsyslog replaces syslog
-  service{"syslog" :
-    ensure => stopped,
-    enable => false,
-    require => [Class["rsyslog::install"], Service["rsyslog"]]
   }
   
 }
