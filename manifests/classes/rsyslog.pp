@@ -74,7 +74,7 @@ class rsyslog::config {
 }
 
 class rsyslog::service {
-  if $operatingsystem != "CentOS" {  
+  if $operatingsystem == "CentOS" {  
     # Rsyslog replaces syslog - ensure stopped before starting rsyslog
     service{"syslog" :
       ensure => stopped,
