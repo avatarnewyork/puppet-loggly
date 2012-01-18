@@ -74,12 +74,14 @@ class rsyslog::config {
 }
 
 class rsyslog::service {
-  # Rsyslog replaces syslog - ensure stopped before starting rsyslog
-  service{"syslog" :
-    ensure => stopped,
-    enable => false,
-    require => Class["rsyslog::install"],
-    notify => Service["rsyslog"],
+  if $operatingsystem != "CentOS" {  
+    # Rsyslog replaces syslog - ensure stopped before starting rsyslog
+    service{"syslog" :
+      ensure => stopped,
+      enable => false,
+      require => Class["rsyslog::install"],
+      notify => Service["rsyslog"],
+    }
   }
   service{"rsyslog" :
     ensure => running,
