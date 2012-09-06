@@ -27,6 +27,7 @@ class rsyslog::install {
       failovermethod => "priority",
       enabled => 1,
       gpgcheck => 0,
+      includepkgs => "rsyslog, rsyslog4",
       #gpgkey => "file:///etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY"
     }
     package {$rsyslogpkg :
