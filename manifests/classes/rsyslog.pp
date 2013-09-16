@@ -63,7 +63,8 @@ class rsyslog::config {
 
   $rsyslogd = "/etc/rsyslog.d"
   $rsyslogconf = "/etc/rsyslog.conf"
-  
+  $logglyport = "514"
+
   file { $rsyslogd :
     ensure => directory,
   }
@@ -99,22 +100,16 @@ class rsyslog {
     mode => 644
   }
 
-  #$tmpl_tls = template("loggly/tls.erb")      
   include rsyslog::install, rsyslog::config, rsyslog::service
 
-  define input($port,$username,$password,$inputid){
-    file { "/etc/rsyslog.d/input_$port.conf" :
+  define input($loggly_token){
+    file { "/etc/rsyslog.d/loggly.conf" :
       content => template("loggly/input.conf.erb"),
       notify => [Class["rsyslog::service"],Exec["curl -X POST"]],
     }
-    exec { "curl -X POST" :
-      command => "curl -X POST -u '$username:$password' -F 'name=$hostname' http://avatarnewyork.loggly.com/api/inputs/$inputid/adddevice",
-      cwd => "/usr/bin",
-      path => "/usr/bin:/bin",
-      refreshonly => true,
-    }
   }
 
+  #TODO: pass facility option - default local2
   define logfile($logname,$filepath,$severity='info'){
     file { "/etc/rsyslog.d/$logname.conf" :
       content => template("loggly/log.conf.erb"),

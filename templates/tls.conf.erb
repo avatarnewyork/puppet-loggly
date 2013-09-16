@@ -1,8 +1,7 @@
+# RsyslogGnuTLS
 
-# TLS Support
-
-$DefaultNetstreamDriverCAFile /etc/loggly.com.crt
+$DefaultNetstreamDriverCAFile <%= $logglycrt %>
 $ActionSendStreamDriver gtls
 $ActionSendStreamDriverMode 1
-$ActionSendStreamDriverAuthMode anon
-
+$ActionSendStreamDriverAuthMode x509/name
+$ActionSendStreamDriverPermittedPeer *.loggly.com

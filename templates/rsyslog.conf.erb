@@ -10,12 +10,12 @@ $ModLoad imklog.so	# provides kernel logging support (previously done by rklogd)
 #$ModLoad immark.so	# provides --MARK-- message capability
 
 # Provides UDP syslog reception
-#$ModLoad imudp.so
-#$UDPServerRun 514
+$ModLoad imudp.so
+$UDPServerRun 514
 
 # Provides TCP syslog reception
-#$ModLoad imtcp.so  
-#$InputTCPServerRun 514
+$ModLoad imtcp.so  
+$InputTCPServerRun 514
 
 
 #### GLOBAL DIRECTIVES ####
@@ -34,9 +34,12 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 # Logging much else clutters up the screen.
 #kern.*                                                 /dev/console
 
-# Log anything (except mail) of level info or higher.
+# Log anything (except mail, local2) of level info or higher.
 # Don't log private authentication messages!
-*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+*.info;local2.none;mail.none;authpriv.none;cron.none    /var/log/messages
+
+# TODO: Local Inputs - make variable default local2
+local2.*					        /var/log/local2
 
 # The authpriv file has restricted access.
 authpriv.*                                              /var/log/secure
