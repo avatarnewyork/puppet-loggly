@@ -105,7 +105,7 @@ class rsyslog {
   define input($loggly_token){
     file { "/etc/rsyslog.d/loggly.conf" :
       content => template("loggly/input.conf.erb"),
-      notify => [Class["rsyslog::service"],Exec["curl -X POST"]],
+      notify => Class["rsyslog::service"],
     }
   }
 
