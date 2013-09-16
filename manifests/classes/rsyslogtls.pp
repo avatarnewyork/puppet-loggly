@@ -30,7 +30,6 @@ class rsyslogtls::config inherits rsyslog::config {
 
   $tlsconf = "tls.conf"
   $logglycrt = "/etc/loggly.com.crt"
-  $logglyport = "6514"
   
   File[$rsyslogconf]{
     content => template("loggly/tls.conf.erb","loggly/rsyslog.conf.erb"),
@@ -44,5 +43,6 @@ class rsyslogtls::config inherits rsyslog::config {
 
 
 class rsyslogtls inherits rsyslog {
+  $logglyport = "6514"
   include rsyslogtls::install, rsyslogtls::config
 }

@@ -63,7 +63,6 @@ class rsyslog::config {
 
   $rsyslogd = "/etc/rsyslog.d"
   $rsyslogconf = "/etc/rsyslog.conf"
-  $logglyport = "514"
 
   file { $rsyslogd :
     ensure => directory,
@@ -99,7 +98,8 @@ class rsyslog {
     group => "root",
     mode => 644
   }
-
+  $logglyport = "514"
+  
   include rsyslog::install, rsyslog::config, rsyslog::service
 
   define input($loggly_token){
