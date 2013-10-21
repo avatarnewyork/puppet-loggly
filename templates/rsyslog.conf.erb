@@ -30,6 +30,9 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 
 #### RULES ####
 
+# remove unwanted messages (datadog)
+:msg, contains, "No events to flush." ~
+
 # Log all kernel messages to the console.
 # Logging much else clutters up the screen.
 #kern.*                                                 /dev/console
