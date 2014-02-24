@@ -11,7 +11,7 @@ class rsyslogtls::install inherits rsyslog::install{
     package {$rsyslogtlspkg :
       ensure => latest,
       alias => "rsyslog-gnutls",
-      require => Yumrepo["ius"],
+      require => Yumrepo["ius-archive"],
     }
   }else{
     package {$rsyslogtlspkg :

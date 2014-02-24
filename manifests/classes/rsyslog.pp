@@ -6,7 +6,7 @@
 #
 # Requirements:
 # curl package
-# CentOS requires rsyslog4 and rsyslog4-gnutls provided by the IUS Repo
+# CentOS requires rsyslog4 and rsyslog4-gnutls provided by the IUS Archive Repo
 # 
 ##
 
@@ -18,12 +18,24 @@ class rsyslog::install {
     CentOS => "rsyslog4",
     default => "rsyslog",
   }  
-  # ius repo required for CentOS to install rsyslog4
+  # ius-archive repo required for CentOS to install rsyslog4
   if $operatingsystem == "CentOS" {
+
+    # No Longer Supported - Replaced with archived repo - disabling repo below
     yumrepo{"ius" :
       descr => 'IUS Community Packages for Enterprise Linux 5 - $basearch',     
       baseurl => 'http://dl.iuscommunity.org/pub/ius/stable/Redhat/5/$basearch',
       mirrorlist => 'http://dmirr.iuscommunity.org/mirrorlist?repo=ius-el5&arch=$basearch',
+      failovermethod => "priority",
+      enabled => 0,
+      gpgcheck => 0,
+      includepkgs => "rsyslog, rsyslog4",
+      #gpgkey => "file:///etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY"
+    }
+    yumrepo{"ius-archive" :
+      descr => 'name=IUS Community Packages for Enterprise Linux 5 - $basearch - Archive',     
+      baseurl => 'http://dl.iuscommunity.org/pub/ius/archive/CentOS/5/$basearch',
+      mirrorlist => 'http://dmirr.iuscommunity.org/mirrorlist/?repo=ius-centos5-archive&arch=$basearch',
       failovermethod => "priority",
       enabled => 1,
       gpgcheck => 0,
@@ -33,7 +45,7 @@ class rsyslog::install {
     package {$rsyslogpkg :
       ensure => latest,
       alias => "rsyslog",
-      require => Yumrepo["ius"],
+      require => Yumrepo["ius-archive"],
     }
    }else{
      package {$rsyslogpkg :
