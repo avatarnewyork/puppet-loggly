@@ -39,7 +39,7 @@ $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 
 # Log anything (except mail, local2) of level info or higher.
 # Don't log private authentication messages!
-*.info;local2.none;mail.none;authpriv.none;cron.none    /var/log/messages
+kern.none;*.info;local2.none;mail.none;authpriv.none;cron.none    /var/log/messages
 
 # TODO: Local Inputs - make variable default local2
 local2.*					        /var/log/local2
